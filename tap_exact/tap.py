@@ -18,8 +18,8 @@ class TapExact(Tap):
         Property("start_date", DateTimeType),
         Property("client_id", StringType, secret=True, required=True),
         Property("client_secret", StringType, secret=True, required=True),
-        Property("tokens_s3_bucket", StringType, required=True),
-        Property("tokens_s3_key", StringType, required=True),
+        Property("azure_connection_string", StringType, required=True),
+        Property("blob_storage_path", StringType, required=True),
         Property("divisions", ArrayType(StringType), required=True),
     ).to_dict()
 
