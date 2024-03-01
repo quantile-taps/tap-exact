@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import typing as t
-from pathlib import Path
 
 from singer_sdk.typing import StringType, IntegerType, BooleanType, DateTimeType, PropertiesList, Property, NumberType
 
@@ -196,4 +195,21 @@ class GLAccountClassificationMappingsStream(ExactStream):
         Property("GLSchemeCode", StringType),
         Property("GLSchemeDescription", StringType),
         Property("GLSchemeID", StringType),
+    ).to_dict()
+
+
+class DeletedStream(ExactSyncStream):
+    name = "deleted"
+    primary_keys = ["ID"]
+    path = "/sync/Deleted"
+    replication_key = "Timestamp"
+
+    schema = PropertiesList(
+        Property("Timestamp", StringType),
+        Property("DeletedBy", StringType),
+        Property("DeletedDate", DateTimeType),
+        Property("Division", StringType),
+        Property("EntityKey", StringType),
+        Property("EntityType", StringType),
+        Property("ID", StringType),
     ).to_dict()
