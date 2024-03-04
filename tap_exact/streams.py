@@ -205,11 +205,11 @@ class DeletedStream(ExactSyncStream):
     replication_key = "Timestamp"
 
     schema = PropertiesList(
-        Property("Timestamp", StringType),
+        Property("Timestamp", IntegerType),
         Property("DeletedBy", StringType),
         Property("DeletedDate", DateTimeType),
-        Property("Division", StringType),
+        Property("Division", IntegerType),
         Property("EntityKey", StringType),
-        Property("EntityType", StringType),
+        Property("EntityType", IntegerType),
         Property("ID", StringType),
     ).to_dict()
