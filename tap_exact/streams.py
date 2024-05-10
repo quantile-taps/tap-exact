@@ -4,7 +4,15 @@ from __future__ import annotations
 
 import typing as t
 
-from singer_sdk.typing import StringType, IntegerType, BooleanType, DateTimeType, PropertiesList, Property, NumberType
+from singer_sdk.typing import (
+    StringType,
+    IntegerType,
+    BooleanType,
+    DateTimeType,
+    PropertiesList,
+    Property,
+    NumberType,
+)
 
 from tap_exact.client import ExactStream, ExactSyncStream
 
@@ -212,4 +220,121 @@ class DeletedStream(ExactSyncStream):
         Property("EntityKey", StringType),
         Property("EntityType", IntegerType),
         Property("ID", StringType),
+    ).to_dict()
+
+
+class SalesEntryLinesStream(ExactStream):
+    name = "sales_entry_lines"
+    primary_keys = ["ID"]
+    path = "/salesentry/SalesEntryLines"
+
+    schema = PropertiesList(
+        Property("EntryID", StringType),
+        Property("AmountDC", IntegerType),
+        Property("AmountFC", IntegerType),
+        Property("Asset", StringType),
+        Property("AssetDescription", StringType),
+        Property("CostCenter", StringType),
+        Property("CostCenterDescription", StringType),
+        Property("CostUnit", StringType),
+        Property("CostUnitDescription", StringType),
+        Property("Description", StringType),
+        Property("Division", IntegerType),
+        Property("ExtraDutyAmountFC", IntegerType),
+        Property("ExtraDutyPercentage", IntegerType),
+        Property("From", StringType),
+        Property("GLAccount", StringType),
+        Property("GLAccountCode", StringType),
+        Property("GLAccountDescription", StringType),
+        Property("ID", StringType),
+        Property("IntraStatArea", StringType),
+        Property("IntraStatCountry", StringType),
+        Property("IntraStatDeliveryTerm", StringType),
+        Property("IntraStatTransactionA", StringType),
+        Property("IntraStatTransactionB", StringType),
+        Property("IntraStatTransportMethod", StringType),
+        Property("LineNumber", IntegerType),
+        Property("Notes", StringType),
+        Property("Project", StringType),
+        Property("ProjectDescription", StringType),
+        Property("Quantity", IntegerType),
+        Property("SerialNumber", StringType),
+        Property("Subscription", StringType),
+        Property("StatisticalNumber", StringType),
+        Property("StatisticalNetWeight", IntegerType),
+        Property("StatisticalValue", IntegerType),
+        Property("StatisticalQuantity", IntegerType),
+        Property("SubscriptionDescription", StringType),
+        Property("TaxSchedule", StringType),
+        Property("To", StringType),
+        Property("TrackingNumber", StringType),
+        Property("TrackingNumberDescription", StringType),
+        Property("Type", IntegerType),
+        Property("VATAmountDC", IntegerType),
+        Property("VATAmountFC", IntegerType),
+        Property("VATBaseAmountDC", IntegerType),
+        Property("VATBaseAmountFC", IntegerType),
+        Property("VATCode", StringType),
+        Property("VATCodeDescription", StringType),
+        Property("CustomField", StringType),
+        Property("VATPercentage", IntegerType),
+    ).to_dict()
+
+
+class SalesEntriesStream(ExactStream):
+    name = "sales_entries"
+    primary_keys = ["EntryID"]
+    path = "/salesentry/SalesEntries"
+
+    schema = PropertiesList(
+        Property("AmountDC", IntegerType),
+        Property("AmountFC", IntegerType),
+        Property("BatchNumber", StringType),
+        Property("Created", DateTimeType),
+        Property("Creator", StringType),
+        Property("CreatorFullName", StringType),
+        Property("Currency", StringType),
+        Property("Customer", StringType),
+        Property("CustomerName", StringType),
+        Property("Description", StringType),
+        Property("Division", IntegerType),
+        Property("Document", StringType),
+        Property("DocumentNumber", StringType),
+        Property("DocumentSubject", StringType),
+        Property("DueDate", DateTimeType),
+        Property("EntryDate", DateTimeType),
+        Property("EntryID", StringType),
+        Property("EntryNumber", IntegerType),
+        Property("ExternalLinkDescription", StringType),
+        Property("ExternalLinkReference", StringType),
+        Property("GAccountAmountFC", StringType),
+        Property("InvoiceNumber", IntegerType),
+        Property("IsExtraDuty", BooleanType),
+        Property("Journal", StringType),
+        Property("JournalDescription", StringType),
+        Property("Modified", DateTimeType),
+        Property("Modifier", StringType),
+        Property("ModifierFullName", StringType),
+        Property("OrderNumber", IntegerType),
+        Property("PaymentCondition", StringType),
+        Property("PaymentConditionDescription", StringType),
+        Property("PaymentConditionPaymentMethod", StringType),
+        Property("PaymentReference", StringType),
+        Property("ProcessNumber", IntegerType),
+        Property("Rate", IntegerType),
+        Property("ReportingYear", IntegerType),
+        Property("ReportingPeriod", IntegerType),
+        Property("Reversal", BooleanType),
+        Property("Status", IntegerType),
+        Property("StatusDescription", StringType),
+        Property("Type", IntegerType),
+        Property("TypeDescription", StringType),
+        Property("VATAmountDC", IntegerType),
+        Property("VATAmountFC", IntegerType),
+        Property("WithholdingTaxAmountDC", StringType),
+        Property("WithholdingTaxBaseAmount", StringType),
+        Property("WithholdingTaxPercentage", StringType),
+        Property("YourRef", StringType),
+        Property("CustomField", StringType),
+        Property("SalesEntryLines", StringType),
     ).to_dict()

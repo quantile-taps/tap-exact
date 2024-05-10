@@ -3,7 +3,13 @@
 from __future__ import annotations
 
 from singer_sdk import Tap
-from singer_sdk.typing import DateTimeType, StringType, Property, PropertiesList, ArrayType
+from singer_sdk.typing import (
+    DateTimeType,
+    StringType,
+    Property,
+    PropertiesList,
+    ArrayType,
+)
 
 from tap_exact import streams
 
@@ -34,6 +40,8 @@ class TapExact(Tap):
             streams.GLAccountClassificationMappingsStream(self),
             streams.TransactionLinesStream(self),
             streams.DeletedStream(self),
+            streams.SalesEntryLinesStream(self),
+            streams.SalesEntriesStream(self),
         ]
 
 
