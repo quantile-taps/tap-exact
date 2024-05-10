@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Optional, Dict
 import typing
 from datetime import datetime
+import time
+import logging
 
 import requests
 from singer_sdk.helpers.jsonpath import extract_jsonpath
@@ -48,6 +50,15 @@ class ExactPaginator(BaseOffsetPaginator):
             Boolean flag used to indicate if the endpoint has more pages.
         """
         data = self.stream.xml_to_dict(response)
+
+        if response.headers["X-RateLimit-Minutely-Remaining"] == "0":
+            logging.info("Reached rate limit. Sleeping...")
+            reset_timestamp = int(response.headers["X-RateLimit-Minutely-Reset"])
+            current_timestamp = time.time() * 1000
+            time_to_wait_in_sec = (reset_timestamp - current_timestamp) / 1000
+            logging.info(f"Sleeping for {time_to_wait_in_sec}")
+            time.sleep(time_to_wait_in_sec)
+
         link = data.get("feed", {}).get("link", [])
         if type(link) == list:
             return "next" in [item.get("@rel", "") for item in link]
@@ -101,7 +112,9 @@ class ExactStream(RESTStream):
         replication_key = self.get_starting_timestamp(context)
         return replication_key or start_date
 
-    def get_url_params(self, context: Optional[dict], next_page_token) -> Dict[str, Any]:
+    def get_url_params(
+        self, context: Optional[dict], next_page_token
+    ) -> Dict[str, Any]:
         params: dict = {}
         if self.select:
             params["$select"] = self.select
@@ -126,7 +139,13 @@ class ExactStream(RESTStream):
             # parse xml to dict
             data = json.loads(json.dumps(xmltodict.parse(cleaned_xml_string)))
         except:
-            data = json.loads(json.dumps(xmltodict.parse(response.content.decode("utf-8-sig").encode("utf-8"))))
+            data = json.loads(
+                json.dumps(
+                    xmltodict.parse(
+                        response.content.decode("utf-8-sig").encode("utf-8")
+                    )
+                )
+            )
         return data
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
@@ -198,7 +217,9 @@ class ExactSyncStream(ExactStream):
             rep_key = state["replication_key_value"]
         return rep_key or 1
 
-    def get_url_params(self, context: Optional[dict], next_page_token) -> Dict[str, Any]:
+    def get_url_params(
+        self, context: Optional[dict], next_page_token
+    ) -> Dict[str, Any]:
         params: dict = {}
         if self.select:
             params["$select"] = self.select
