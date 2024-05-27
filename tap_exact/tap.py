@@ -42,6 +42,7 @@ class TapExact(Tap):
             streams.DeletedStream(self),
             streams.SalesEntryLinesStream(self),
             streams.SalesEntriesStream(self),
+            streams.SalesInvoicesStream(self),
         ]
 
 
