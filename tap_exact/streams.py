@@ -205,6 +205,40 @@ class GLAccountClassificationMappingsStream(ExactStream):
         Property("GLSchemeID", StringType),
     ).to_dict()
 
+class BudgetsStream(ExactStream):
+    """Define Budgets stream."""
+
+    name = "budgets"
+    path = "/budget/Budgets"
+    primary_keys: t.ClassVar[list[str]] = ["ID"]
+    schema = PropertiesList(
+        Property("ID", StringType),
+        Property("AmountDC", NumberType),
+        Property("BudgetScenario", StringType),
+        Property("BudgetScenarioCode", StringType),
+        Property("BudgetScenarioDescription", StringType),
+        Property("Costcenter", StringType),
+        Property("CostcenterDescription", StringType),
+        Property("Costunit", StringType),
+        Property("CostunitDescription", StringType),
+        Property("Created", DateTimeType),
+        Property("Creator", StringType),
+        Property("CreatorFullName", StringType),
+        Property("Division", IntegerType),
+        Property("GLAccount", StringType),
+        Property("GLAccountCode", StringType),
+        Property("GLAccountDescription", StringType),
+        Property("HID", IntegerType),
+        Property("Item", StringType),
+        Property("ItemCode", StringType),
+        Property("ItemDescription", StringType),
+        Property("Modified", DateTimeType),
+        Property("Modifier", StringType),
+        Property("ModifierFullName", StringType),
+        Property("ReportingPeriod", IntegerType),
+        Property("ReportingYear", IntegerType),
+    ).to_dict()
+
 
 class SalesInvoicesStream(ExactSyncStream):
     """Define SalesInvoices stream."""
