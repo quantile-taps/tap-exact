@@ -128,11 +128,14 @@ class ExactAuthenticator(OAuthAuthenticator, metaclass=SingletonMeta):
 
         self.last_refreshed = request_time
 
+        # Convert datetime to pendulum for ISO8601 formatting
+        last_refreshed_pendulum = pendulum.instance(self.last_refreshed)
+
         # Update the tokens in Azure blob storage
         tokens = {
             "access_token": self.access_token, 
             "refresh_token": self.refresh_token,
-            "last_refreshed": self.last_refreshed.to_iso8601_string()
+            "last_refreshed": last_refreshed_pendulum.to_iso8601_string()
         }
         
         self.update_tokens_in_blob(tokens)
